@@ -20,7 +20,9 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api-auth/', include('rest_framework.urls')) # подключаем веб интерфейс
+    path('api-auth/', include('rest_framework.urls')), # подключаем веб интерфейс
+
+    path('api/v1/', include('movies.urls')),
 ]
 
 if settings.DEBUG:
