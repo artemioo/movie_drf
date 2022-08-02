@@ -4,7 +4,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from .models import Movie, Actor
 from .serializers import MovieListSerializer, MovieDetailSerializer, ReviewCreateSerializer, CreateRatingSerializer, \
     ActorListSerializer, ActorDetailSerializer
-from .service import get_client_ip, MovieFilter
+from .service import get_client_ip, MovieFilter, PaginationMovies
 
 
 class MovieListView(generics.ListAPIView):
@@ -13,6 +13,7 @@ class MovieListView(generics.ListAPIView):
     filter_backends = (DjangoFilterBackend,)
     filterset_class = MovieFilter
     permission_classes = [permissions.IsAuthenticated] # какие правда доступа должны быть, чтоб просмотреть данный url
+    pagination_class = PaginationMovies
 
     def get_queryset(self):
         movies = Movie.objects.filter(draft=False).annotate(
@@ -32,14 +33,6 @@ class MovieDetailView(generics.RetrieveAPIView):
     """ Вывод информации о фильме """
     queryset = Movie.objects.filter(draft=False)
     serializer_class = MovieDetailSerializer
-
-
-# class ActorListView(APIView):
-#     """ Вывод информации о фильме """
-#     def get(self, request):
-#         actor = Actor.objects.all()
-#         serializer = ActorListSerializer(actor)
-#         return Response(serializer.data)
 
 
 class ActorListView(generics.ListAPIView):

@@ -1,6 +1,12 @@
 from django_filters import rest_framework as filters
+from rest_framework.pagination import PageNumberPagination
 
 from .models import Movie
+
+
+class PaginationMovies(PageNumberPagination):
+    page_size = 2
+    max_page_size = 1000
 
 
 def get_client_ip(request):
