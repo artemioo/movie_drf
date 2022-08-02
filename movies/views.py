@@ -1,5 +1,5 @@
 from django.db import models
-from rest_framework import generics
+from rest_framework import generics, permissions
 from django_filters.rest_framework import DjangoFilterBackend
 from .models import Movie, Actor
 from .serializers import MovieListSerializer, MovieDetailSerializer, ReviewCreateSerializer, CreateRatingSerializer, \
@@ -12,6 +12,7 @@ class MovieListView(generics.ListAPIView):
     serializer_class = MovieListSerializer
     filter_backends = (DjangoFilterBackend,)
     filterset_class = MovieFilter
+    permission_classes = [permissions.IsAuthenticated] # какие правда доступа должны быть, чтоб просмотреть данный url
 
     def get_queryset(self):
         movies = Movie.objects.filter(draft=False).annotate(
